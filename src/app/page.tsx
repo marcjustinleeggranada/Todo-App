@@ -1,0 +1,38 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { LoginForm } from "@/components/login-form";
+
+type HomePageProps = {
+  searchParams?: { error?: string };
+};
+
+export default function HomePage({ searchParams }: HomePageProps) {
+  const authFailed = searchParams?.error === "auth";
+
+  return (
+    <main className="flex min-h-screen items-center justify-center p-6">
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Todo App</CardTitle>
+          <CardDescription>
+            Sign in with a magic link sent to your email.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          {authFailed && (
+            <p className="text-sm text-destructive">
+              Sign-in link expired or invalid. Request a new magic link in the
+              same browser you use to open the email.
+            </p>
+          )}
+          <LoginForm />
+        </CardContent>
+      </Card>
+    </main>
+  );
+}

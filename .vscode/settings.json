@@ -1,0 +1,9 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "files.watcherExclude": {
+    "**/node_modules/**": true
+  },
+  "files.associations": {
+    "**/supabase/**/*.sql": "postgres"
+  }
+}
