@@ -20,14 +20,13 @@ export default function HomePage({ searchParams }: HomePageProps) {
         <CardHeader>
           <CardTitle>Todo App</CardTitle>
           <CardDescription>
-            Sign in with a magic link sent to your email.
+            Sign in with a 6-digit code sent to your email.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           {authFailed && (
             <p className="text-sm text-destructive">
-              Sign-in link expired or invalid. Request a new magic link in the
-              same browser you use to open the email.
+              Sign-in failed. Request a new code and try again.
             </p>
           )}
           <LoginForm />
