@@ -9,6 +9,9 @@ import { createClient } from "@/utils/supabase/client";
 
 type Step = "email" | "code";
 
+// Length of the email OTP Supabase sends (configured in the Supabase dashboard).
+const OTP_LENGTH = 8;
+
 export function LoginForm() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("email");
@@ -32,7 +35,7 @@ export function LoginForm() {
   async function sendCode(trimmedEmail: string) {
     const supabase = createClient();
 
-    // Sends a 6-digit email OTP. The user enters the code manually —
+    // Sends an email OTP code. The user enters the code manually —
     // we do not use magic-link redirects (avoids Gmail link-prefetch consuming the token).
     const { error } = await supabase.auth.signInWithOtp({
       email: trimmedEmail,
@@ -43,7 +46,7 @@ export function LoginForm() {
       return false;
     }
 
-    toast.success("Check your email for a 6-digit code");
+    toast.success(`Check your email for a ${OTP_LENGTH}-digit code`);
     return true;
   }
 
@@ -71,8 +74,8 @@ export function LoginForm() {
     e.preventDefault();
 
     const trimmedCode = code.trim();
-    if (!/^\d{6}$/.test(trimmedCode)) {
-      toast.error("Enter the 6-digit code from your email");
+    if (!new RegExp(`^\\d{${OTP_LENGTH}}$`).test(trimmedCode)) {
+      toast.error(`Enter the ${OTP_LENGTH}-digit code from your email`);
       return;
     }
 
@@ -114,17 +117,19 @@ export function LoginForm() {
     return (
       <form onSubmit={handleVerify} className="flex flex-col gap-3">
         <p className="text-sm text-muted-foreground">
-          Enter the 6-digit code sent to{" "}
+          Enter the {OTP_LENGTH}-digit code sent to{" "}
           <span className="font-medium text-foreground">{email}</span>
         </p>
         <Input
           type="text"
           inputMode="numeric"
           autoComplete="one-time-code"
-          placeholder="123456"
+          placeholder={"1234567890".slice(0, OTP_LENGTH)}
           value={code}
-          onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-          maxLength={6}
+          onChange={(e) =>
+            setCode(e.target.value.replace(/\D/g, "").slice(0, OTP_LENGTH))
+          }
+          maxLength={OTP_LENGTH}
           required
           disabled={verifying}
           autoFocus

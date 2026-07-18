@@ -20,7 +20,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         <CardHeader>
           <CardTitle>Todo App</CardTitle>
           <CardDescription>
-            Sign in with a 6-digit code sent to your email.
+            Sign in with a one-time code sent to your email.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
